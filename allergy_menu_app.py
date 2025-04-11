@@ -87,7 +87,7 @@ if selected_allergens or selected_diet or include_ingredients:
     if include_ingredients and not selected_allergens and not selected_diet:
         st.subheader("🍽️ Dishes containing selected ingredients")
     else:
-        st.subheader("✅ Safe Dishes by Menu Section")
+        st.subheader("✅ Safe Dishes")
 
     any_displayed = False
     for key, label in category_order.items():
