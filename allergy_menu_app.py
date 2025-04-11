@@ -7,12 +7,12 @@ from collections import defaultdict, OrderedDict
 with open("processed_menu_dishes.json", "r") as f:
     dishes = json.load(f)
 
-# Title and mobile header
-st.title("🍽️ Allergy-Friendly Menu Scanner")
+# Custom title for mobile
+st.markdown("<h2 style='text-align:center; color:white; margin-top: 0;'>🍽️ Allergy Scanner</h2>", unsafe_allow_html=True)
 st.markdown(
     """
     <div style='background-color: #f9f9f9; padding: 10px 15px; border-radius: 10px; 
-         text-align: center; font-size: 22px; font-weight: bold; color: #333; 
+         text-align: center; font-size: 20px; font-weight: bold; color: #333; 
          border: 1px solid #eee; margin-bottom: 15px;'>
         💡 KNOWLEDGE IS MONEY
     </div>
@@ -20,7 +20,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Category order
 category_order = OrderedDict([
     ("To Snack", "🧂 To Snack"),
     ("To Break", "🍳 To Break"),
@@ -30,18 +29,18 @@ category_order = OrderedDict([
     ("Dessert", "🍰 Dessert")
 ])
 
-# Filters
-st.markdown("Select allergens to **exclude** from your search:")
-all_allergens = sorted({a for dish in dishes for a in dish.get("allergens", [])})
-selected_allergens = st.multiselect("Allergens to avoid:", all_allergens)
+# Expanders for filters
+with st.expander("🔻 Filter by Allergens"):
+    all_allergens = sorted({a for dish in dishes for a in dish.get("allergens", [])})
+    selected_allergens = st.multiselect("Select allergens to avoid:", all_allergens)
 
-st.markdown("Select dietary preferences to **include**:")
-diet_tags = ["Vegetarian", "Vegan", "Halal", "Kosher", "Pescetarian"]
-selected_diet = st.multiselect("Dietary restrictions to follow:", diet_tags)
+with st.expander("🔻 Filter by Dietary Preferences"):
+    diet_tags = ["Vegetarian", "Pescetarian", "Halal", "Vegan"]
+    selected_diet = st.multiselect("Select dietary preferences to follow:", diet_tags)
 
-# Ingredient filter dropdown
-all_ingredients = sorted({i for dish in dishes for i in dish.get("ingredients", [])})
-include_ingredients = st.multiselect("🧂 Must include ingredients:", all_ingredients)
+with st.expander("🧂 Filter by Required Ingredients"):
+    all_ingredients = sorted({i for dish in dishes for i in dish.get("ingredients", [])})
+    include_ingredients = st.multiselect("Must include ingredients:", all_ingredients)
 
 # Filtering logic
 safe_dishes = []
@@ -83,12 +82,13 @@ for dish, mods in modifiable_dishes:
     cat = dish.get("category", "Uncategorized")
     grouped_modifiable[cat].append(f"⚠️ {dish['name']} *(Can be made {', '.join(m + '-free' for m in mods)})*")
 
-# Display results: safe ✅ first, then modifiable ⚠️
+# Output
 if selected_allergens or selected_diet or include_ingredients:
     if include_ingredients and not selected_allergens and not selected_diet:
         st.subheader("🍽️ Dishes containing selected ingredients")
     else:
         st.subheader("✅ Safe Dishes by Menu Section")
+
     any_displayed = False
     for key, label in category_order.items():
         safe = grouped_safe.get(key, [])
@@ -101,6 +101,6 @@ if selected_allergens or selected_diet or include_ingredients:
                 st.markdown(f"- {name}")
             any_displayed = True
     if not any_displayed:
-        st.warning("No safe dishes found based on your selections.")
+        st.warning("No matching dishes found based on your filters.")
 else:
     st.info("Please select allergens, dietary preferences, or ingredients to filter menu options.")
