@@ -62,8 +62,9 @@ for dish in dishes:
         if any(a.lower() in r.lower() for r in removable)
     ]
     diet_ok = all(d in diet for d in selected_diet)
+
     includes_ok = all(
-        any(ing in i.lower() for i in ingredients) for ing in include_ingredients
+        ing.lower() in [i.lower() for i in ingredients] for ing in include_ingredients
     )
 
     if not allergens_block and diet_ok and includes_ok:
