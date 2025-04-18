@@ -1,6 +1,10 @@
 
 import streamlit as st
-import pyrebase
+
+
+# NEW:
+import pyrebase4 as pyrebase
+
 from collections import OrderedDict
 
 # Firebase setup
