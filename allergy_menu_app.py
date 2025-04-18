@@ -1,13 +1,26 @@
 
 import streamlit as st
+import pyrebase
 import json
 from collections import defaultdict, OrderedDict
 
-# Load dish data
-with open("processed_menu_dishes.json", "r") as f:
-    dishes = json.load(f)
+# Initialize Firebase using secrets.toml
+firebase_config = st.secrets["firebase"]
+firebase = pyrebase.initialize_app(firebase_config)
+db = firebase.database()
 
-# Custom title for mobile
+# Load dish data from Firebase
+menu_data = db.child("menu_items").get().val()
+
+dishes = []
+if menu_data:
+    for category, items in menu_data.items():
+        for key, dish in items.items():
+            dish["category"] = category
+            dishes.append(dish)
+else:
+    st.warning("⚠️ No data found in Firebase yet.")
+
 st.markdown("<h2 style='text-align:center; color:white; margin-top: 0;'>🍽️ Allergy Scanner</h2>", unsafe_allow_html=True)
 st.markdown(
     """
@@ -29,7 +42,6 @@ category_order = OrderedDict([
     ("Dessert", "🍰 Dessert")
 ])
 
-# Expanders for filters
 with st.expander("🔻 Filter by Allergens"):
     all_allergens = sorted({a for dish in dishes for a in dish.get("allergens", [])})
     selected_allergens = st.multiselect("Select allergens to avoid:", all_allergens)
@@ -88,7 +100,7 @@ if selected_allergens or selected_diet or include_ingredients:
     if include_ingredients and not selected_allergens and not selected_diet:
         st.subheader("🍽️ Dishes containing selected ingredients")
     else:
-        st.subheader("✅ Safe Dishes")
+        st.subheader("✅ Safe Dishes by Menu Section")
 
     any_displayed = False
     for key, label in category_order.items():
