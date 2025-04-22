@@ -4,10 +4,10 @@ import firebase_admin
 from firebase_admin import credentials, db
 from collections import defaultdict, OrderedDict
 
-# Initialize Firebase Admin SDK
+# Initialize Firebase
 if not firebase_admin._apps:
     cred = credentials.Certificate({
-        "type": "service_account",
+        "type": st.secrets["type"],
         "project_id": st.secrets["project_id"],
         "private_key_id": st.secrets["private_key_id"],
         "private_key": st.secrets["private_key"],
@@ -19,30 +19,19 @@ if not firebase_admin._apps:
         "client_x509_cert_url": st.secrets["client_x509_cert_url"]
     })
     firebase_admin.initialize_app(cred, {
-        'databaseURL': st.secrets["database_url"]
+        "databaseURL": st.secrets["database_url"]
     })
 
-st.set_page_config(page_title="Allergy Scanner", layout="centered")
+st.set_page_config(page_title="Allergy Menu App", layout="wide")
 tab1, tab2, tab3 = st.tabs(["🧪 Allergy Scanner", "📖 Menu Knowledge", "➕ Add New Item"])
 
+# -------------------- TAB 1: ALLERGY SCANNER --------------------
 with tab1:
-    st.markdown("<h2 style='text-align:center; color:white;'>🍽️ Allergy Scanner</h2>", unsafe_allow_html=True)
-    st.markdown("""
-        <div style='background-color: #f9f9f9; padding: 10px 15px; border-radius: 10px; 
-             text-align: center; font-size: 20px; font-weight: bold; color: #333; 
-             border: 1px solid #eee; margin-bottom: 15px;'>
-            💡 KNOWLEDGE IS MONEY
-        </div>
-    """, unsafe_allow_html=True)
-
-    category_order = OrderedDict([
-        ("To Snack", "🧂 To Snack"),
-        ("To Break", "🍳 To Break"),
-        ("To Start", "🥗 To Start"),
-        ("To Follow", "🍽️ To Follow"),
-        ("To Share", "👫 To Share"),
-        ("Dessert", "🍰 Dessert")
-    ])
+    st.markdown("<h2 style='text-align:center;'>🍽️ Allergy Scanner</h2>", unsafe_allow_html=True)
+    st.markdown(
+        "<div style='background:#f9f9f9; padding:10px; text-align:center; font-size:18px; "
+        "border-radius:10px; color:#333;'>💡 KNOWLEDGE IS MONEY</div>", unsafe_allow_html=True
+    )
 
     ref = db.reference("menu_items")
     data = ref.get()
@@ -50,20 +39,14 @@ with tab1:
     if data:
         for category, entries in data.items():
             for _, item in entries.items():
-                item["category"] = item.get("category", category)
+                item["category"] = category
                 all_dishes.append(item)
 
-    if st.checkbox("🔍 Show raw dish data for debugging"):
-        for dish in all_dishes:
-            st.json(dish)
+    all_allergens = sorted({a for d in all_dishes for a in d.get("allergens", [])})
+    selected_allergens = [a.lower() for a in st.multiselect("❌ Allergens to avoid:", all_allergens)]
 
-    with st.expander("🔻 Filter by Allergens"):
-        all_allergens = sorted({a for d in all_dishes for a in d.get("allergens", [])})
-        selected_allergens = [a.lower() for a in st.multiselect("Select allergens to avoid:", all_allergens)]
-
-    with st.expander("🔻 Filter by Dietary Preferences"):
-        diet_tags = ["Vegetarian", "Pescetarian", "Halal", "Vegan"]
-        selected_diet = [d.lower() for d in st.multiselect("Select dietary preferences to follow:", diet_tags)]
+    diet_tags = ["Vegetarian", "Vegan", "Halal", "Pescetarian"]
+    selected_diet = [d.lower() for d in st.multiselect("🥗 Dietary preferences:", diet_tags)]
 
     safe_dishes = []
     modifiable_dishes = []
@@ -76,9 +59,9 @@ with tab1:
         diet = [d.lower() for d in dish.get("diet", [])]
         category = dish.get("category", "Uncategorized")
 
-        diet_ok = all(d in diet for d in selected_diet)
         allergens_block = [a for a in selected_allergens if a in allergens and a not in removable]
         removable_ok = [a for a in selected_allergens if a in removable]
+        diet_ok = all(d in diet for d in selected_diet)
 
         if not allergens_block and diet_ok:
             if removable_ok:
@@ -86,63 +69,37 @@ with tab1:
             else:
                 safe_dishes.append(dish)
         else:
-            rejected_dishes.append({
-                "name": name,
-                "diet": diet,
-                "allergens": allergens,
-                "removable": removable,
-                "reason": {
-                    "diet_ok": diet_ok,
-                    "blocked_allergens": allergens_block
-                }
-            })
-
-    grouped_safe = defaultdict(list)
-    grouped_modifiable = defaultdict(list)
-    for dish in safe_dishes:
-        grouped_safe[dish.get("category", "Uncategorized")].append(f"✅ {dish.get('name', 'Unnamed')}")
-    for dish, mods in modifiable_dishes:
-        grouped_modifiable[dish.get("category", "Uncategorized")].append(
-            f"⚠️ {dish.get('name', 'Unnamed')} *(Can be made {', '.join(m + '-free' for m in mods)})*"
-        )
+            rejected_dishes.append((dish, allergens_block, diet_ok))
 
     if selected_allergens or selected_diet:
-        st.subheader("✅ Safe Dishes")
-        any_displayed = False
-        for key, label in category_order.items():
-            safe = grouped_safe.get(key, [])
-            modifiable = grouped_modifiable.get(key, [])
-            if safe or modifiable:
-                st.markdown(f"### {label}")
-                for name in safe:
-                    st.markdown(f"- {name}")
-                for name in modifiable:
-                    st.markdown(f"- {name}")
-                any_displayed = True
-        if not any_displayed:
-            st.warning("No matching dishes found based on your filters.")
-        if st.checkbox("🧠 Show why dishes were rejected"):
-            for r in rejected_dishes:
-                st.markdown(f"❌ **{r['name']}** — Diet OK: `{r['reason']['diet_ok']}`, Blocked Allergens: `{r['reason']['blocked_allergens']}`")
-    else:
-        st.info("Please select allergens or dietary preferences to filter menu options.")
+        st.subheader("✅ Matching Dishes")
+        if safe_dishes or modifiable_dishes:
+            for d in safe_dishes:
+                st.markdown(f"✅ **{d['name']}** - *{d.get('category', '')}*")
+            for d, mods in modifiable_dishes:
+                st.markdown(f"⚠️ **{d['name']}** (Can be made {', '.join([m + '-free' for m in mods])})")
+        else:
+            st.warning("No matching dishes found.")
 
-# --------------------- TAB 2: MENU KNOWLEDGE ---------------------
+        if st.checkbox("🧠 Show rejected dishes"):
+            for d, blocked, ok in rejected_dishes:
+                st.markdown(f"❌ **{d['name']}** — Blocked by: {blocked}, Diet OK: {ok}")
+    else:
+        st.info("Use filters to start scanning for safe dishes.")
+
+# -------------------- TAB 2: MENU KNOWLEDGE --------------------
 with tab2:
     st.title("📖 Menu Knowledge")
-
     menu_tabs = st.tabs(["FOOD", "COCKTAILS", "WINE"])
     categories = ["FOOD", "COCKTAILS", "WINE"]
-
     for i, category in enumerate(categories):
         with menu_tabs[i]:
             ref = db.reference(f"menu_items/{category}")
             data = ref.get()
-
             if not data:
-                st.info(f"No items in {category}")
+                st.info(f"No items found in {category}")
             else:
-                for item_id, item in data.items():
+                for item in data.values():
                     st.markdown(f"### 🍽️ {item.get('name', 'Unnamed')}")
                     st.markdown(f"**Description:** {item.get('description', '')}")
                     if item.get("ingredients"):
@@ -150,94 +107,64 @@ with tab2:
                     if item.get("allergens"):
                         st.markdown(f"⚠️ Allergens: {', '.join(item['allergens'])}")
                     if item.get("removable_allergens"):
-                        st.markdown(f"✂️ Removable Allergens: {', '.join(item['removable_allergens'])}")
+                        st.markdown(f"✂️ Removable: {', '.join(item['removable_allergens'])}")
                     if item.get("diet"):
                         st.markdown(f"🥗 Diet: {', '.join(item['diet'])}")
-                    if item.get("markings"):
-                        st.markdown(f"🍴 Markings: {', '.join(item['markings'])}")
                     st.markdown("---")
 
-# --------------------- TAB 3: ADD NEW ITEM ---------------------
+# -------------------- TAB 3: ADD NEW ITEM --------------------
 with tab3:
-    st.title("➕ Add New Menu Item")
-
-    category = st.radio("Category", ["FOOD", "COCKTAILS", "WINE"], horizontal=True)
+    st.title("➕ Add New Item")
+    category = st.radio("Select Category", ["FOOD", "COCKTAILS", "WINE"], horizontal=True)
 
     if category == "FOOD":
-        name = st.text_input("Dish Name")
+        name = st.text_input("Name")
         description = st.text_area("Description")
-        allergens = st.multiselect("Allergens", ["Gluten", "Dairy", "Egg", "Nut", "Soy", "Shellfish", "Allium", "Nightshade", "Seed", "Pork", "Citrus", "Legume", "Mushroom", "Alcohol"])
+        allergens = st.multiselect("Allergens", all_allergens)
         removable = st.multiselect("Removable Allergens", allergens)
-        diet = st.multiselect("Dietary Tags", ["Vegetarian", "Vegan", "Halal", "Pescetarian"])
+        diet = st.multiselect("Diet", diet_tags)
         ingredients = st.text_area("Ingredients (comma-separated)")
-        markings = st.multiselect("Markings", ["App Fork", "App Knife", "Entrée Fork", "Entrée Knife", "Dessert Spoon"])
-
-        if st.button("💾 Save FOOD"):
+        if st.button("Save FOOD"):
             db.reference("menu_items/FOOD").push({
                 "name": name,
                 "description": description,
                 "allergens": allergens,
                 "removable_allergens": removable,
                 "diet": diet,
-                "ingredients": [i.strip().capitalize() for i in ingredients.split(",") if i],
-                "markings": markings
+                "ingredients": [i.strip() for i in ingredients.split(",") if i]
             })
-            st.success("✅ Food item saved successfully.")
+            st.success("✅ Food item saved.")
 
     elif category == "COCKTAILS":
         name = st.text_input("Cocktail Name")
-        description = st.text_area("Specifications / Recipe")
+        description = st.text_area("Description / Recipe")
         glassware = st.text_input("Glassware")
-        rocks = st.radio("Rocks", ["Yes", "No"], horizontal=True)
         garnish = st.text_input("Garnish")
-        flavor = st.multiselect("Flavor", ["Sweet", "Bitter", "Sour", "Spicy", "Smoky"])
-        aroma = st.multiselect("Aroma", ["Fragrant", "Tropical", "Spiced", "Woody", "Citrusy"])
-        texture = st.multiselect("Texture / Mouthfeel", ["Smooth", "Fizzy", "Crisp", "Icy", "Frothy"])
-        strength = st.multiselect("Strength / Body", ["Boozy", "Light-bodied", "Balanced", "Potent", "Delicate"])
-        mood = st.multiselect("Mood / Style", ["Classic", "Modern", "Tiki", "Elegant", "Playful"])
-
-        if st.button("💾 Save COCKTAIL"):
+        flavor = st.text_input("Flavor Notes (comma-separated)")
+        if st.button("Save COCKTAIL"):
             db.reference("menu_items/COCKTAILS").push({
                 "name": name,
                 "description": description,
                 "glassware": glassware,
-                "rocks": rocks,
                 "garnish": garnish,
-                "flavor": flavor,
-                "aroma": aroma,
-                "texture": texture,
-                "strength": strength,
-                "mood": mood
+                "flavor": [f.strip() for f in flavor.split(",") if f]
             })
-            st.success("✅ Cocktail saved successfully.")
+            st.success("✅ Cocktail saved.")
 
     elif category == "WINE":
-        producer = st.text_input("Producer Name")
-        cuvee = st.text_input("Cuvée Name")
+        name = st.text_input("Wine Name")
+        producer = st.text_input("Producer")
         grape = st.text_input("Grape Variety")
+        region = st.text_input("Region")
         vintage = st.text_input("Vintage")
-        region = st.text_input("Region / Appellation")
-        description = st.text_area("Wine Description")
-        body = st.multiselect("Body", ["Light", "Medium", "Full", "Round", "Rich"])
-        acidity = st.multiselect("Acidity", ["Soft", "Balanced", "Bright", "Crisp", "Zesty"])
-        tannin = st.multiselect("Tannin", ["Low", "Silky", "Smooth", "Firm", "Grippy"])
-        nose = st.multiselect("On the Nose", ["Fruity", "Floral", "Herbal", "Spicy", "Earthy"])
-        palate = st.multiselect("On the Palate", ["Dry", "Juicy", "Velvety", "Lush", "Savory"])
-        finish = st.multiselect("Finish", ["Clean", "Smooth", "Lingering", "Long", "Bold"])
-
-        if st.button("💾 Save WINE"):
+        notes = st.text_area("Notes")
+        if st.button("Save WINE"):
             db.reference("menu_items/WINE").push({
+                "name": name,
                 "producer": producer,
-                "cuvee": cuvee,
                 "grape": grape,
-                "vintage": vintage,
                 "region": region,
-                "description": description,
-                "body": body,
-                "acidity": acidity,
-                "tannin": tannin,
-                "nose": nose,
-                "palate": palate,
-                "finish": finish
+                "vintage": vintage,
+                "notes": notes
             })
-            st.success("✅ Wine saved successfully.")
+            st.success("✅ Wine saved.")
