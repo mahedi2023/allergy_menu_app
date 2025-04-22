@@ -25,6 +25,8 @@ st.set_page_config(page_title="Allergy Scanner", layout="centered")
 tab1, tab2, tab3 = st.tabs(["🧪 Allergy Scanner", "📖 Menu Knowledge", "➕ Add New Item"])
 
 # --------------------- TAB 1: ALLERGY SCANNER ---------------------
+from collections import defaultdict, OrderedDict
+
 with tab1:
     st.markdown("<h2 style='text-align:center; color:white; margin-top: 0;'>🍽️ Allergy Scanner</h2>", unsafe_allow_html=True)
     st.markdown("""
@@ -63,19 +65,16 @@ with tab1:
         diet_tags = ["Vegetarian", "Pescetarian", "Halal", "Vegan"]
         selected_diet = st.multiselect("Select dietary preferences to follow:", diet_tags)
 
-    with st.expander("🧂 Filter by Required Ingredients"):
-        all_ingredients = sorted({i for d in all_dishes for i in d.get("ingredients", [])})
-        include_ingredients = st.multiselect("Must include ingredients:", all_ingredients)
-
     # Filtering logic
     safe_dishes = []
     modifiable_dishes = []
 
     for dish in all_dishes:
+        name = dish.get("name", "Unnamed")
         allergens = dish.get("allergens", [])
         removable = dish.get("removable_allergens", [])
-        diet = dish.get("diet", [])
-        ingredients = dish.get("ingredients", [])
+        diet = [d.lower() for d in dish.get("diet", [])]
+        category = dish.get("category", "Uncategorized")
 
         allergens_block = [
             a for a in selected_allergens
@@ -86,12 +85,9 @@ with tab1:
             a for a in selected_allergens
             if any(a.lower() in r.lower() for r in removable)
         ]
-        diet_ok = all(d in diet for d in selected_diet)
-        includes_ok = all(
-            ing.lower() in [i.lower() for i in ingredients] for ing in include_ingredients
-        )
+        diet_ok = all(d.lower() in diet for d in selected_diet)
 
-        if not allergens_block and diet_ok and includes_ok:
+        if not allergens_block and diet_ok:
             if removable_ok:
                 modifiable_dishes.append((dish, removable_ok))
             else:
@@ -101,19 +97,15 @@ with tab1:
     grouped_safe = defaultdict(list)
     grouped_modifiable = defaultdict(list)
     for dish in safe_dishes:
-        cat = dish.get("category", "Uncategorized")
-        grouped_safe[cat].append(f"✅ {dish['name']}")
+        grouped_safe[dish.get("category", "Uncategorized")].append(f"✅ {dish.get('name', 'Unnamed')}")
     for dish, mods in modifiable_dishes:
-        cat = dish.get("category", "Uncategorized")
-        grouped_modifiable[cat].append(f"⚠️ {dish['name']} *(Can be made {', '.join(m + '-free' for m in mods)})*")
+        grouped_modifiable[dish.get("category", "Uncategorized")].append(
+            f"⚠️ {dish.get('name', 'Unnamed')} *(Can be made {', '.join(m + '-free' for m in mods)})*"
+        )
 
     # Output
-    if selected_allergens or selected_diet or include_ingredients:
-        if include_ingredients and not selected_allergens and not selected_diet:
-            st.subheader("🍽️ Dishes containing selected ingredients")
-        else:
-            st.subheader("✅ Safe Dishes")
-
+    if selected_allergens or selected_diet:
+        st.subheader("✅ Safe Dishes")
         any_displayed = False
         for key, label in category_order.items():
             safe = grouped_safe.get(key, [])
@@ -128,7 +120,8 @@ with tab1:
         if not any_displayed:
             st.warning("No matching dishes found based on your filters.")
     else:
-        st.info("Please select allergens, dietary preferences, or ingredients to filter menu options.")
+        st.info("Please select allergens or dietary preferences to filter menu options.")
+
 
 # --------------------- TAB 2: MENU KNOWLEDGE ---------------------
 with tab2:
@@ -176,7 +169,7 @@ with tab3:
         markings = st.multiselect("Markings", ["App Fork", "App Knife", "Entrée Fork", "Entrée Knife", "Dessert Spoon"])
 
         if st.button("💾 Save FOOD"):
-            db.reference("menu_items/FOOD").push({
+            db.reference("menu_items/FOOD").push({{
                 "name": name,
                 "description": description,
                 "allergens": allergens,
@@ -184,7 +177,7 @@ with tab3:
                 "diet": diet,
                 "ingredients": [i.strip().capitalize() for i in ingredients.split(",") if i],
                 "markings": markings
-            })
+            }})
             st.success("✅ Food item saved successfully.")
 
     elif category == "COCKTAILS":
@@ -200,7 +193,7 @@ with tab3:
         mood = st.multiselect("Mood / Style", ["Classic", "Modern", "Tiki", "Elegant", "Playful"])
 
         if st.button("💾 Save COCKTAIL"):
-            db.reference("menu_items/COCKTAILS").push({
+            db.reference("menu_items/COCKTAILS").push({{
                 "name": name,
                 "description": description,
                 "glassware": glassware,
@@ -211,7 +204,7 @@ with tab3:
                 "texture": texture,
                 "strength": strength,
                 "mood": mood
-            })
+            }})
             st.success("✅ Cocktail saved successfully.")
 
     elif category == "WINE":
@@ -229,7 +222,7 @@ with tab3:
         finish = st.multiselect("Finish", ["Clean", "Smooth", "Lingering", "Long", "Bold"])
 
         if st.button("💾 Save WINE"):
-            db.reference("menu_items/WINE").push({
+            db.reference("menu_items/WINE").push({{
                 "producer": producer,
                 "cuvee": cuvee,
                 "grape": grape,
@@ -242,5 +235,5 @@ with tab3:
                 "nose": nose,
                 "palate": palate,
                 "finish": finish
-            })
+            }})
             st.success("✅ Wine saved successfully.")
