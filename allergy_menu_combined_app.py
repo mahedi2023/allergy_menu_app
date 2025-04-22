@@ -1,4 +1,3 @@
-
 import streamlit as st
 import firebase_admin
 from firebase_admin import credentials, db
@@ -80,6 +79,28 @@ with tab1:
     else:
         st.info("Please select filters above to begin scanning.")
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # --------------------- TAB 2: MENU KNOWLEDGE ---------------------
 with tab2:
     st.title("📖 Menu Knowledge")
@@ -110,39 +131,110 @@ with tab2:
                         st.markdown(f"🍴 Markings: {', '.join(item['markings'])}")
                     st.markdown("---")
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # --------------------- TAB 3: ADD NEW ITEM ---------------------
 with tab3:
+    
     st.title("➕ Add New Menu Item")
 
     category = st.radio("Category", ["FOOD", "COCKTAILS", "WINE"], horizontal=True)
-    name = st.text_input("Dish Name")
-    description = st.text_area("Dish Description")
 
-    allergens = st.multiselect("Select Allergens", [
-        "Alcohol", "Allium", "Avocado", "Cheese", "Chili", "Chocolate", "Cilantro", "Citrus", "Coconut", "Corn",
-        "Dairy", "Egg", "Fish", "Gluten", "Honey", "Legume", "Mollusk", "Mushroom", "Mustard", "Nightshade", "Nut",
-        "Pork", "Poultry", "Sechuan Button", "Seed", "Sesame", "Shellfish", "soy"
-    ])
-    removable = st.multiselect("Removable Allergens", allergens)
+    if category == "FOOD":
+        name = st.text_input("Dish Name")
+        description = st.text_area("Description")
+        allergens = st.multiselect("Allergens", ["Gluten", "Dairy", "Egg", "Nut", "Soy", "Shellfish", "Allium", "Nightshade", "Seed", "Pork", "Citrus", "Legume", "Mushroom", "Alcohol"])
+        removable = st.multiselect("Removable Allergens", allergens)
+        diet = st.multiselect("Dietary Tags", ["Vegetarian", "Vegan", "Halal", "Pescetarian"])
+        ingredients = st.text_area("Ingredients (comma-separated)")
+        markings = st.multiselect("Markings", ["App Fork", "App Knife", "Entrée Fork", "Entrée Knife", "Dessert Spoon"])
 
-    diets = st.multiselect("Dietary Tags", ["Vegetarian", "Vegan", "Halal", "Pescetarian"])
-
-    ingredients = st.text_input("Ingredients (comma-separated)")
-    ingredient_list = [i.strip().capitalize() for i in ingredients.split(",") if i.strip()]
-
-    markings = st.multiselect("Markings", ["App Fork", "App Knife", "Entrée Fork", "Entrée Knife", "Soup Spoon", "Dessert Spoon"])
-
-    if st.button("💾 Save Dish"):
-        if not name or not description:
-            st.error("Please enter both a name and description.")
-        else:
-            db.reference(f"menu_items/{category}").push({
+        if st.button("💾 Save FOOD"):
+            db.reference("menu_items/FOOD").push({
                 "name": name,
                 "description": description,
                 "allergens": allergens,
                 "removable_allergens": removable,
-                "diet": diets,
-                "ingredients": ingredient_list,
+                "diet": diet,
+                "ingredients": [i.strip().capitalize() for i in ingredients.split(",") if i],
                 "markings": markings
             })
-            st.success(f"✅ '{name}' added to {category}")
+            st.success("✅ Food item saved successfully.")
+
+    elif category == "COCKTAILS":
+        name = st.text_input("Cocktail Name")
+        description = st.text_area("Specifications / Recipe")
+        glassware = st.text_input("Glassware")
+        rocks = st.radio("Rocks", ["Yes", "No"], horizontal=True)
+        garnish = st.text_input("Garnish")
+        flavor = st.multiselect("Flavor", ["Sweet", "Bitter", "Sour", "Spicy", "Smoky"])
+        aroma = st.multiselect("Aroma", ["Fragrant", "Tropical", "Spiced", "Woody", "Citrusy"])
+        texture = st.multiselect("Texture / Mouthfeel", ["Smooth", "Fizzy", "Crisp", "Icy", "Frothy"])
+        strength = st.multiselect("Strength / Body", ["Boozy", "Light-bodied", "Balanced", "Potent", "Delicate"])
+        mood = st.multiselect("Mood / Style", ["Classic", "Modern", "Tiki", "Elegant", "Playful"])
+
+        if st.button("💾 Save COCKTAIL"):
+            db.reference("menu_items/COCKTAILS").push({
+                "name": name,
+                "description": description,
+                "glassware": glassware,
+                "rocks": rocks,
+                "garnish": garnish,
+                "flavor": flavor,
+                "aroma": aroma,
+                "texture": texture,
+                "strength": strength,
+                "mood": mood
+            })
+            st.success("✅ Cocktail saved successfully.")
+
+    elif category == "WINE":
+        producer = st.text_input("Producer Name")
+        cuvee = st.text_input("Cuvée Name")
+        grape = st.text_input("Grape Variety")
+        vintage = st.text_input("Vintage")
+        region = st.text_input("Region / Appellation")
+        description = st.text_area("Wine Description")
+        body = st.multiselect("Body", ["Light", "Medium", "Full", "Round", "Rich"])
+        acidity = st.multiselect("Acidity", ["Soft", "Balanced", "Bright", "Crisp", "Zesty"])
+        tannin = st.multiselect("Tannin", ["Low", "Silky", "Smooth", "Firm", "Grippy"])
+        nose = st.multiselect("On the Nose", ["Fruity", "Floral", "Herbal", "Spicy", "Earthy"])
+        palate = st.multiselect("On the Palate", ["Dry", "Juicy", "Velvety", "Lush", "Savory"])
+        finish = st.multiselect("Finish", ["Clean", "Smooth", "Lingering", "Long", "Bold"])
+
+        if st.button("💾 Save WINE"):
+            db.reference("menu_items/WINE").push({
+                "producer": producer,
+                "cuvee": cuvee,
+                "grape": grape,
+                "vintage": vintage,
+                "region": region,
+                "description": description,
+                "body": body,
+                "acidity": acidity,
+                "tannin": tannin,
+                "nose": nose,
+                "palate": palate,
+                "finish": finish
+            })
+            st.success("✅ Wine saved successfully.")
+
