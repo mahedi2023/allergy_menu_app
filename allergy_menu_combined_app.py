@@ -29,13 +29,13 @@ from collections import defaultdict, OrderedDict
 
 with tab1:
     st.markdown("<h2 style='text-align:center; color:white; margin-top: 0;'>🍽️ Allergy Scanner</h2>", unsafe_allow_html=True)
-    st.markdown("""
+    st.markdown(\"""
         <div style='background-color: #f9f9f9; padding: 10px 15px; border-radius: 10px; 
              text-align: center; font-size: 20px; font-weight: bold; color: #333; 
              border: 1px solid #eee; margin-bottom: 15px;'>
             💡 KNOWLEDGE IS MONEY
         </div>
-    """, unsafe_allow_html=True)
+    \""", unsafe_allow_html=True)
 
     category_order = OrderedDict([
         ("To Snack", "🧂 To Snack"),
@@ -56,7 +56,11 @@ with tab1:
                 item["category"] = item.get("category", category)
                 all_dishes.append(item)
 
-    # Filters
+    # Optional debug view
+    if st.checkbox("🔍 Show raw dish data for debugging"):
+        for dish in all_dishes:
+            st.json(dish)
+
     with st.expander("🔻 Filter by Allergens"):
         all_allergens = sorted({a for d in all_dishes for a in d.get("allergens", [])})
         selected_allergens = st.multiselect("Select allergens to avoid:", all_allergens)
@@ -68,6 +72,7 @@ with tab1:
     # Filtering logic
     safe_dishes = []
     modifiable_dishes = []
+    rejected_dishes = []
 
     for dish in all_dishes:
         name = dish.get("name", "Unnamed")
@@ -92,6 +97,17 @@ with tab1:
                 modifiable_dishes.append((dish, removable_ok))
             else:
                 safe_dishes.append(dish)
+        else:
+            rejected_dishes.append({
+                "name": name,
+                "diet": diet,
+                "allergens": allergens,
+                "removable": removable,
+                "reason": {
+                    "diet_ok": diet_ok,
+                    "blocked_allergens": allergens_block
+                }
+            })
 
     # Group dishes
     grouped_safe = defaultdict(list)
@@ -119,8 +135,15 @@ with tab1:
                 any_displayed = True
         if not any_displayed:
             st.warning("No matching dishes found based on your filters.")
+
+        # Show debug for rejected dishes
+        if st.checkbox("🧠 Show why dishes were rejected"):
+            for r in rejected_dishes:
+                st.markdown(f"❌ **{r['name']}** — Diet OK: `{r['reason']['diet_ok']}`, Blocked Allergens: `{r['reason']['blocked_allergens']}`")
+
     else:
         st.info("Please select allergens or dietary preferences to filter menu options.")
+
 
 
 # --------------------- TAB 2: MENU KNOWLEDGE ---------------------
