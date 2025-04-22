@@ -58,7 +58,7 @@ with tab1:
 
     with st.expander("🔻 Filter by Dietary Preferences"):
         diet_tags = ["Vegetarian", "Pescetarian", "Halal", "Vegan"]
-        selected_diet = st.multiselect("Select dietary preferences to follow:", diet_tags)
+        selected_diet = [d.lower() for d in st.multiselect("Select dietary preferences to follow:", diet_tags)]
 
     safe_dishes = []
     modifiable_dishes = []
@@ -80,7 +80,7 @@ with tab1:
             a for a in selected_allergens
             if any(a.lower() in r.lower() for r in removable)
         ]
-        diet_ok = all(d.lower() in diet for d in selected_diet)
+        diet_ok = all(d in diet for d in selected_diet)
 
         if not allergens_block and diet_ok:
             if removable_ok:
