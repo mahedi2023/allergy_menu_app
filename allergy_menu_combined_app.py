@@ -25,10 +25,15 @@ if not firebase_admin._apps:
 st.set_page_config(page_title="Allergy Scanner", layout="centered")
 tab1, tab2, tab3 = st.tabs(["🧪 Allergy Scanner", "📖 Menu Knowledge", "➕ Add New Item"])
 
-# --------------------- TAB 1: ALLERGY SCANNER ---------------------
 with tab1:
-    st.markdown("<h2 style='text-align:center; color:white; margin-top: 0;'>🍽️ Allergy Scanner</h2>", unsafe_allow_html=True)
-    st.markdown("<div style='background-color: #f9f9f9; padding: 10px 15px; border-radius: 10px; text-align: center; font-size: 20px; font-weight: bold; color: #333; border: 1px solid #eee; margin-bottom: 15px;'>💡 KNOWLEDGE IS MONEY</div>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align:center; color:white;'>🍽️ Allergy Scanner</h2>", unsafe_allow_html=True)
+    st.markdown("""
+        <div style='background-color: #f9f9f9; padding: 10px 15px; border-radius: 10px; 
+             text-align: center; font-size: 20px; font-weight: bold; color: #333; 
+             border: 1px solid #eee; margin-bottom: 15px;'>
+            💡 KNOWLEDGE IS MONEY
+        </div>
+    """, unsafe_allow_html=True)
 
     category_order = OrderedDict([
         ("To Snack", "🧂 To Snack"),
@@ -54,7 +59,7 @@ with tab1:
 
     with st.expander("🔻 Filter by Allergens"):
         all_allergens = sorted({a for d in all_dishes for a in d.get("allergens", [])})
-        selected_allergens = st.multiselect("Select allergens to avoid:", all_allergens)
+        selected_allergens = [a.lower() for a in st.multiselect("Select allergens to avoid:", all_allergens)]
 
     with st.expander("🔻 Filter by Dietary Preferences"):
         diet_tags = ["Vegetarian", "Pescetarian", "Halal", "Vegan"]
@@ -66,21 +71,14 @@ with tab1:
 
     for dish in all_dishes:
         name = dish.get("name", "Unnamed")
-        allergens = dish.get("allergens", [])
-        removable = dish.get("removable_allergens", [])
+        allergens = [a.lower() for a in dish.get("allergens", [])]
+        removable = [a.lower() for a in dish.get("removable_allergens", [])]
         diet = [d.lower() for d in dish.get("diet", [])]
         category = dish.get("category", "Uncategorized")
 
-        allergens_block = [
-            a for a in selected_allergens
-            if any(a.lower() in x.lower() for x in allergens)
-            and not any(a.lower() in r.lower() for r in removable)
-        ]
-        removable_ok = [
-            a for a in selected_allergens
-            if any(a.lower() in r.lower() for r in removable)
-        ]
         diet_ok = all(d in diet for d in selected_diet)
+        allergens_block = [a for a in selected_allergens if a in allergens and a not in removable]
+        removable_ok = [a for a in selected_allergens if a in removable]
 
         if not allergens_block and diet_ok:
             if removable_ok:
@@ -123,7 +121,6 @@ with tab1:
                 any_displayed = True
         if not any_displayed:
             st.warning("No matching dishes found based on your filters.")
-
         if st.checkbox("🧠 Show why dishes were rejected"):
             for r in rejected_dishes:
                 st.markdown(f"❌ **{r['name']}** — Diet OK: `{r['reason']['diet_ok']}`, Blocked Allergens: `{r['reason']['blocked_allergens']}`")
