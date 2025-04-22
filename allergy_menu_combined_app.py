@@ -1,14 +1,15 @@
 import streamlit as st
 import firebase_admin
 from firebase_admin import credentials, db
+from collections import defaultdict, OrderedDict
 
-# Initialize Firebase
+# Initialize Firebase Admin SDK
 if not firebase_admin._apps:
     cred = credentials.Certificate({
         "type": "service_account",
         "project_id": st.secrets["project_id"],
         "private_key_id": st.secrets["private_key_id"],
-        "private_key": st.secrets["private_key"].replace('\n', '\n'),
+        "private_key": st.secrets["private_key"],
         "client_email": st.secrets["client_email"],
         "client_id": st.secrets["client_id"],
         "auth_uri": st.secrets["auth_uri"],
@@ -21,85 +22,113 @@ if not firebase_admin._apps:
     })
 
 st.set_page_config(page_title="Allergy Scanner", layout="centered")
-
 tab1, tab2, tab3 = st.tabs(["🧪 Allergy Scanner", "📖 Menu Knowledge", "➕ Add New Item"])
 
 # --------------------- TAB 1: ALLERGY SCANNER ---------------------
 with tab1:
-    st.title("🧪 Allergy Scanner")
+    st.markdown("<h2 style='text-align:center; color:white; margin-top: 0;'>🍽️ Allergy Scanner</h2>", unsafe_allow_html=True)
+    st.markdown("""
+        <div style='background-color: #f9f9f9; padding: 10px 15px; border-radius: 10px; 
+             text-align: center; font-size: 20px; font-weight: bold; color: #333; 
+             border: 1px solid #eee; margin-bottom: 15px;'>
+            💡 KNOWLEDGE IS MONEY
+        </div>
+    """, unsafe_allow_html=True)
 
+    category_order = OrderedDict([
+        ("To Snack", "🧂 To Snack"),
+        ("To Break", "🍳 To Break"),
+        ("To Start", "🥗 To Start"),
+        ("To Follow", "🍽️ To Follow"),
+        ("To Share", "👫 To Share"),
+        ("Dessert", "🍰 Dessert")
+    ])
+
+    # Load data from Firebase
     ref = db.reference("menu_items")
     data = ref.get()
-
     all_dishes = []
     if data:
         for category, entries in data.items():
             for _, item in entries.items():
-                item["category"] = category
+                item["category"] = item.get("category", category)
                 all_dishes.append(item)
 
-    all_allergens = sorted(set(a for d in all_dishes for a in d.get("allergens", [])))
-    selected_allergens = st.multiselect("Allergens to avoid", all_allergens)
+    # Filters
+    with st.expander("🔻 Filter by Allergens"):
+        all_allergens = sorted({a for d in all_dishes for a in d.get("allergens", [])})
+        selected_allergens = st.multiselect("Select allergens to avoid:", all_allergens)
 
-    selected_diets = st.multiselect("Dietary preferences", ["Vegetarian", "Vegan", "Halal", "Pescetarian"])
+    with st.expander("🔻 Filter by Dietary Preferences"):
+        diet_tags = ["Vegetarian", "Pescetarian", "Halal", "Vegan"]
+        selected_diet = st.multiselect("Select dietary preferences to follow:", diet_tags)
 
-    include_ingredients = st.text_input("🧂 Must include ingredients (comma-separated):")
-    include_terms = [i.strip().lower() for i in include_ingredients.split(",") if i.strip()]
+    with st.expander("🧂 Filter by Required Ingredients"):
+        all_ingredients = sorted({i for d in all_dishes for i in d.get("ingredients", [])})
+        include_ingredients = st.multiselect("Must include ingredients:", all_ingredients)
 
-    if selected_allergens or selected_diets or include_terms:
-        safe = []
-        caution = []
+    # Filtering logic
+    safe_dishes = []
+    modifiable_dishes = []
 
-        for dish in all_dishes:
-            allergens = dish.get("allergens", [])
-            removable = dish.get("removable_allergens", [])
-            diet = dish.get("diet", [])
-            ingredients = [i.lower() for i in dish.get("ingredients", [])]
+    for dish in all_dishes:
+        allergens = dish.get("allergens", [])
+        removable = dish.get("removable_allergens", [])
+        diet = dish.get("diet", [])
+        ingredients = dish.get("ingredients", [])
 
-            if all(d in diet for d in selected_diets) and all(term in ingredients for term in include_terms):
-                if any(a in allergens for a in selected_allergens):
-                    if any(a in removable for a in selected_allergens):
-                        caution.append(dish)
-                else:
-                    safe.append(dish)
+        allergens_block = [
+            a for a in selected_allergens
+            if any(a.lower() in x.lower() for x in allergens)
+            and not any(a.lower() in r.lower() for r in removable)
+        ]
+        removable_ok = [
+            a for a in selected_allergens
+            if any(a.lower() in r.lower() for r in removable)
+        ]
+        diet_ok = all(d in diet for d in selected_diet)
+        includes_ok = all(
+            ing.lower() in [i.lower() for i in ingredients] for ing in include_ingredients
+        )
 
-        from collections import defaultdict
-        grouped = defaultdict(list)
-        for d in safe:
-            grouped[d["category"]].append("✅ " + d["name"])
-        for d in caution:
-            grouped[d["category"]].append("⚠️ " + d["name"])
+        if not allergens_block and diet_ok and includes_ok:
+            if removable_ok:
+                modifiable_dishes.append((dish, removable_ok))
+            else:
+                safe_dishes.append(dish)
 
-        st.subheader("🍽️ Filtered Results by Section")
-        for section in ["To Snack", "To Break", "To Start", "To Follow", "To Share", "Dessert"]:
-            if section in grouped:
-                st.markdown(f"### {section}")
-                for item in grouped[section]:
-                    st.markdown(f"- {item}")
+    # Group dishes
+    grouped_safe = defaultdict(list)
+    grouped_modifiable = defaultdict(list)
+    for dish in safe_dishes:
+        cat = dish.get("category", "Uncategorized")
+        grouped_safe[cat].append(f"✅ {dish['name']}")
+    for dish, mods in modifiable_dishes:
+        cat = dish.get("category", "Uncategorized")
+        grouped_modifiable[cat].append(f"⚠️ {dish['name']} *(Can be made {', '.join(m + '-free' for m in mods)})*")
+
+    # Output
+    if selected_allergens or selected_diet or include_ingredients:
+        if include_ingredients and not selected_allergens and not selected_diet:
+            st.subheader("🍽️ Dishes containing selected ingredients")
+        else:
+            st.subheader("✅ Safe Dishes")
+
+        any_displayed = False
+        for key, label in category_order.items():
+            safe = grouped_safe.get(key, [])
+            modifiable = grouped_modifiable.get(key, [])
+            if safe or modifiable:
+                st.markdown(f"### {label}")
+                for name in safe:
+                    st.markdown(f"- {name}")
+                for name in modifiable:
+                    st.markdown(f"- {name}")
+                any_displayed = True
+        if not any_displayed:
+            st.warning("No matching dishes found based on your filters.")
     else:
-        st.info("Please select filters above to begin scanning.")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        st.info("Please select allergens, dietary preferences, or ingredients to filter menu options.")
 
 # --------------------- TAB 2: MENU KNOWLEDGE ---------------------
 with tab2:
@@ -131,30 +160,8 @@ with tab2:
                         st.markdown(f"🍴 Markings: {', '.join(item['markings'])}")
                     st.markdown("---")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # --------------------- TAB 3: ADD NEW ITEM ---------------------
 with tab3:
-    
     st.title("➕ Add New Menu Item")
 
     category = st.radio("Category", ["FOOD", "COCKTAILS", "WINE"], horizontal=True)
@@ -237,4 +244,3 @@ with tab3:
                 "finish": finish
             })
             st.success("✅ Wine saved successfully.")
-
