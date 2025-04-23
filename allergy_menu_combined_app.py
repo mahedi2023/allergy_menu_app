@@ -99,7 +99,7 @@ with tab2:
             else:
                 if isinstance(data, dict):
                 elif isinstance(data, list):
-                for item in data:
+            for item in data:
                     
                     
                     st.markdown(f"### 🍽️ {item.get('name', 'Unnamed')}")
