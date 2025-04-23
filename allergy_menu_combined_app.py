@@ -28,22 +28,32 @@ tab1, tab2, tab3 = st.tabs(["🧪 Allergy Scanner", "📖 Menu Knowledge", "➕ 
 with tab1:
     st.title("🧪 Allergy Scanner")
     ref = db.reference("menu_items")
+    
     data = ref.get()
 
     if isinstance(data, dict):
-        for item in data.values():
-            if isinstance(item, dict):
-                st.markdown(f"### 🍽️ {item.get('name', 'Unnamed')}")
-                st.markdown(f"**Description:** {item.get('description', '')}")
-                if item.get("ingredients"):
-                    st.markdown(f"**Ingredients:** {', '.join(item['ingredients'])}")
-                if item.get("allergens"):
-                    st.markdown(f"⚠️ Allergens: {', '.join(item['allergens'])}")
-                if item.get("removable_allergens"):
-                    st.markdown(f"✂️ Removable: {', '.join(item['removable_allergens'])}")
-                if item.get("diet"):
-                    st.markdown(f"🥗 Diet: {', '.join(item['diet'])}")
-                st.markdown("---")
+        items = list(data.values())
+    elif isinstance(data, list):
+        items = data
+    else:
+        items = []
+        st.warning("⚠️ Unexpected data format: must be a dict or list.")
+
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        st.markdown(f"### 🍽️ {item.get('name', 'Unnamed')}")
+        st.markdown(f"**Description:** {item.get('description', '')}")
+        if item.get("ingredients"):
+            st.markdown(f"**Ingredients:** {', '.join(item['ingredients'])}")
+        if item.get("allergens"):
+            st.markdown(f"⚠️ Allergens: {', '.join(item['allergens'])}")
+        if item.get("removable_allergens"):
+            st.markdown(f"✂️ Removable: {', '.join(item['removable_allergens'])}")
+        if item.get("diet"):
+            st.markdown(f"🥗 Diet: {', '.join(item['diet'])}")
+        st.markdown("---")
+
     elif isinstance(data, list):
         for item in data:
             if isinstance(item, dict):
