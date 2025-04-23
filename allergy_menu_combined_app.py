@@ -30,8 +30,8 @@ with tab1:
     ref = db.reference("menu_items")
     
     
+    
     data = ref.get()
-
     items = list(data.values()) if isinstance(data, dict) else data if isinstance(data, list) else []
 
     if not items:
@@ -51,6 +51,7 @@ with tab1:
         if item.get("diet"):
             st.markdown(f"🥗 Diet: {', '.join(item['diet'])}")
         st.markdown("---")
+
 
 
     elif isinstance(data, list):
