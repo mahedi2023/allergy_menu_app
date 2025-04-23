@@ -1,4 +1,3 @@
-
 import streamlit as st
 import firebase_admin
 from firebase_admin import credentials, db
@@ -98,21 +97,31 @@ with tab2:
                 st.info(f"No items found in {category}")
             else:
                 if isinstance(data, dict):
+                    for _, item in data.items():
+                        st.markdown(f"### 🍽️ {item.get('name', 'Unnamed')}")
+                        st.markdown(f"**Description:** {item.get('description', '')}")
+                        if item.get("ingredients"):
+                            st.markdown(f"**Ingredients:** {', '.join(item['ingredients'])}")
+                        if item.get("allergens"):
+                            st.markdown(f"⚠️ Allergens: {', '.join(item['allergens'])}")
+                        if item.get("removable_allergens"):
+                            st.markdown(f"✂️ Removable: {', '.join(item['removable_allergens'])}")
+                        if item.get("diet"):
+                            st.markdown(f"🥗 Diet: {', '.join(item['diet'])}")
+                        st.markdown("---")
                 elif isinstance(data, list):
-            for item in data:
-                    
-                    
-                    st.markdown(f"### 🍽️ {item.get('name', 'Unnamed')}")
-                    st.markdown(f"**Description:** {item.get('description', '')}")
-                    if item.get("ingredients"):
-                        st.markdown(f"**Ingredients:** {', '.join(item['ingredients'])}")
-                    if item.get("allergens"):
-                        st.markdown(f"⚠️ Allergens: {', '.join(item['allergens'])}")
-                    if item.get("removable_allergens"):
-                        st.markdown(f"✂️ Removable: {', '.join(item['removable_allergens'])}")
-                    if item.get("diet"):
-                        st.markdown(f"🥗 Diet: {', '.join(item['diet'])}")
-                    st.markdown("---")
+                    for item in data:
+                        st.markdown(f"### 🍽️ {item.get('name', 'Unnamed')}")
+                        st.markdown(f"**Description:** {item.get('description', '')}")
+                        if item.get("ingredients"):
+                            st.markdown(f"**Ingredients:** {', '.join(item['ingredients'])}")
+                        if item.get("allergens"):
+                            st.markdown(f"⚠️ Allergens: {', '.join(item['allergens'])}")
+                        if item.get("removable_allergens"):
+                            st.markdown(f"✂️ Removable: {', '.join(item['removable_allergens'])}")
+                        if item.get("diet"):
+                            st.markdown(f"🥗 Diet: {', '.join(item['diet'])}")
+                        st.markdown("---")
 
 with tab3:
     st.title("➕ Add New Item")
