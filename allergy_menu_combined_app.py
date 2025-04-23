@@ -29,15 +29,13 @@ with tab1:
     st.title("🧪 Allergy Scanner")
     ref = db.reference("menu_items")
     
+    
     data = ref.get()
 
-    if isinstance(data, dict):
-        items = list(data.values())
-    elif isinstance(data, list):
-        items = data
-    else:
-        items = []
-        st.warning("⚠️ Unexpected data format: must be a dict or list.")
+    items = list(data.values()) if isinstance(data, dict) else data if isinstance(data, list) else []
+
+    if not items:
+        st.warning("⚠️ Unexpected data format or empty list.")
 
     for item in items:
         if not isinstance(item, dict):
@@ -53,6 +51,7 @@ with tab1:
         if item.get("diet"):
             st.markdown(f"🥗 Diet: {', '.join(item['diet'])}")
         st.markdown("---")
+
 
     elif isinstance(data, list):
         for item in data:
