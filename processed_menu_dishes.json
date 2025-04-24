@@ -1,0 +1,1079 @@
+[
+  {
+    "name": "GOUGERE",
+    "category": "To Snack",
+    "allergens": [
+      "Gluten",
+      "Dairy",
+      "Allium",
+      "Seed"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Vegetarian",
+      "Pescetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "Butter",
+      "Milk",
+      "Flour",
+      "Sugar",
+      "Egg",
+      "Onion",
+      "Carrot",
+      "Cheese",
+      "Sesame",
+      "Poppyseed"
+    ]
+  },
+  {
+    "name": "SHISHITOS",
+    "category": "To Snack",
+    "allergens": [
+      "Nightshade",
+      "Gluten",
+      "Legume",
+      "Citrus"
+    ],
+    "removable_allergens": [
+      "Gluten"
+    ],
+    "diet": [
+      "Vegetarian",
+      "Pescetarian",
+      "Halal",
+      "Vegan"
+    ],
+    "ingredients": [
+      "Shishito Peppers",
+      "Canola Oil",
+      "Soy",
+      "Lime"
+    ]
+  },
+  {
+    "name": "LAOTIAN SUSHI",
+    "category": "To Snack",
+    "allergens": [
+      "Allium",
+      "Seed",
+      "Nightshade",
+      "Citrus",
+      "Fish",
+      "Sesame",
+      "Cilantro"
+    ],
+    "removable_allergens": [
+      "Cilantro"
+    ],
+    "diet": [
+      "Pescetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "Fluke",
+      "Jalapeno",
+      "Garlic",
+      "Fish Sauce",
+      "Lime",
+      "Sugar",
+      "Mint",
+      "Cilantro",
+      "Rice",
+      "Ginger",
+      "Scallion",
+      "Sesame",
+      "Salt"
+    ]
+  },
+  {
+    "name": "SMOKING HOT OYSTERS",
+    "category": "To Snack",
+    "allergens": [
+      "Allium",
+      "Nightshade",
+      "Mollusk",
+      "Pork",
+      "Alcohol",
+      "Citrus",
+      "Shellfish"
+    ],
+    "removable_allergens": [
+      "Pork"
+    ],
+    "diet": [
+      "Pescetarian"
+    ],
+    "ingredients": [
+      "Oysters",
+      "Pork",
+      "Parsley",
+      "Chive",
+      "Shallot",
+      "Garlic",
+      "Vinegar",
+      "Sugar",
+      "Onion",
+      "Jalapeno",
+      "Cilantro",
+      "Chili",
+      "Lemon"
+    ]
+  },
+  {
+    "name": "Barbecue Oysters (CSM)",
+    "category": "To Snack",
+    "allergens": [
+      "Gluten",
+      "Dairy",
+      "Allium",
+      "Nightshade",
+      "Citrus",
+      "Pork"
+    ],
+    "removable_allergens": [
+      "Pork"
+    ],
+    "diet": [
+      "Pescetarian"
+    ],
+    "ingredients": [
+      "Flour",
+      "Butter",
+      "Milk",
+      "Cheese",
+      "Jalapeno",
+      "Pepper",
+      "Onion",
+      "Parsley",
+      "Chive",
+      "Ararat",
+      "Garlic",
+      "Ketchup",
+      "Celery",
+      "Onion",
+      "Water",
+      "Sugar",
+      "Worcestershire Sauce",
+      "Apple",
+      "Chili",
+      "Coffee",
+      "Cayenne",
+      "Pepper",
+      "Salt",
+      "Clove",
+      "Pork",
+      "Lime"
+    ]
+  },
+  {
+    "name": "NOTKITORI",
+    "category": "To Snack",
+    "allergens": [
+      "Allium",
+      "Poultry"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Halal"
+    ],
+    "ingredients": [
+      "Chicken",
+      "Scallion",
+      "Schmaltz",
+      "Salt",
+      "Parsley",
+      "Garlic",
+      "Rosemary"
+    ]
+  },
+  {
+    "name": "TRIBECA HOT CHICKEN WINGS",
+    "category": "To Snack",
+    "allergens": [
+      "Dairy",
+      "Allium",
+      "Nightshade",
+      "Corn",
+      "Mustard"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Halal"
+    ],
+    "ingredients": [
+      "Chicken",
+      "Salt",
+      "Pepper",
+      "Water",
+      "Baking Soda",
+      "Buttermilk",
+      "Rice",
+      "Cornstarch",
+      "Cayenne",
+      "Paprika",
+      "Garlic",
+      "Apple",
+      "Sugar",
+      "Cucumber",
+      "Onion",
+      "Coriander",
+      "Mustard Seed",
+      "Turmeric",
+      "Curry"
+    ]
+  },
+  {
+    "name": "DUCK IN A JAR",
+    "category": "To Snack",
+    "allergens": [
+      "Gluten",
+      "Dairy",
+      "Allium",
+      "Alcohol",
+      "Mustard"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Halal"
+    ],
+    "ingredients": [
+      "Duck",
+      "Allspice",
+      "Salt",
+      "Cognac",
+      "Vegetable Oil",
+      "Shallot",
+      "Butter",
+      "Brandy",
+      "Port",
+      "Cream",
+      "Vinegar",
+      "Cauliflower",
+      "Cucumber",
+      "Onion",
+      "Vinegar",
+      "Capers",
+      "Sugar",
+      "Mustard Seed",
+      "Turmeric",
+      "Salt",
+      "Sourdough Bread"
+    ]
+  },
+  {
+    "name": "PARKER HOUSE ROLL",
+    "category": "To Break",
+    "allergens": [
+      "Gluten",
+      "Dairy",
+      "Allium",
+      "Nightshade"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Vegetarian",
+      "Pescetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "Potato",
+      "Yeast",
+      "Butter",
+      "Water",
+      "Salt",
+      "Flour",
+      "Onion",
+      "Shallot",
+      "Parsley"
+    ]
+  },
+  {
+    "name": "JAMI'S SOURDOUGH",
+    "category": "To Break",
+    "allergens": [
+      "Gluten",
+      "Dairy"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Vegetarian",
+      "Pescetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "Sourdough",
+      "Clarence",
+      "Wheat",
+      "Flour",
+      "Butter",
+      "Water",
+      "Salt"
+    ]
+  },
+  {
+    "name": "Hiramasa For One",
+    "category": "To Start",
+    "allergens": [
+      "Nut",
+      "Fish",
+      "Avocado",
+      "Citrus",
+      "Honey",
+      "Gluten",
+      "Legume",
+      "Mustard",
+      "Cilantro",
+      "Nightshade",
+      "Sechuan Button"
+    ],
+    "removable_allergens": [
+      "Nut",
+      "Fish",
+      "Gluten",
+      "Cilantro",
+      "Sechuan Button"
+    ],
+    "diet": [
+      "Vegetarian",
+      "Pescetarian",
+      "Halal",
+      "Vegan"
+    ],
+    "ingredients": [
+      "Fish",
+      "Cucumber",
+      "Olive",
+      "Avocado",
+      "Lime",
+      "Soy",
+      "Mustard",
+      "Honey",
+      "Pine Nut",
+      "Radish",
+      "Cilantro",
+      "Potato",
+      "Sechuan Button"
+    ]
+  },
+  {
+    "name": "Young Greens",
+    "category": "To Start",
+    "allergens": [
+      "Dairy",
+      "Legume",
+      "Nightshade",
+      "Alcohol",
+      "Cheese",
+      "Mustard"
+    ],
+    "removable_allergens": [
+      "Cheese"
+    ],
+    "diet": [
+      "Vegetarian",
+      "Pescetarian",
+      "Halal",
+      "Vegan"
+    ],
+    "ingredients": [
+      "Lettuce",
+      "Romaine",
+      "Olive Oil",
+      "Vinegar",
+      "Dijon",
+      "Parmesan",
+      "Salt",
+      "Pepper",
+      "Carrot",
+      "Radish",
+      "Pea",
+      "Salt"
+    ]
+  },
+  {
+    "name": "Old School/New School Foie Gras",
+    "category": "To Start",
+    "allergens": [
+      "Gluten",
+      "Dairy",
+      "Nightshade",
+      "Alcohol"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Halal"
+    ],
+    "ingredients": [
+      "Foie Gras",
+      "Milk",
+      "Salt",
+      "Pepper",
+      "Salt",
+      "Sugar",
+      "Brandy",
+      "Butter",
+      "Water",
+      "Yeast",
+      "Flour",
+      "Duck",
+      "Apollonia",
+      "Strawberry",
+      "Lemon",
+      "Bay Leaf",
+      "Peppercorn"
+    ]
+  },
+  {
+    "name": "Scarpinocc Cacio E Pepe",
+    "category": "To Start",
+    "allergens": [
+      "Gluten",
+      "Dairy",
+      "Allium",
+      "Mushroom"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Pescetarian",
+      "Vegetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "cream",
+      "butter",
+      "black pepper",
+      "parmesan",
+      "midnight moon goat cheese",
+      "morel mushrooms",
+      "shallots",
+      "garlic",
+      "bay leaf",
+      "thyme",
+      "white wine",
+      "asparagus",
+      "spring onions",
+      "roma tomatoes",
+      "parmesan stock"
+    ]
+  },
+  {
+    "name": "Spaghetti Vongole",
+    "category": "To Start",
+    "allergens": [
+      "Gluten",
+      "Dairy",
+      "Allium",
+      "Nightshade",
+      "Citrus",
+      "Mollusk",
+      "Shellfish"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Pescetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "Spinach",
+      "Flour",
+      "Semolina",
+      "Salt",
+      "Nettle",
+      "Garlic",
+      "Parsley",
+      "Lemon",
+      "Chili",
+      "Butter",
+      "Lemon",
+      "Olive Oil",
+      "Breadcrumb",
+      "Clam"
+    ]
+  },
+  {
+    "name": "Stroganoff",
+    "category": "To Start",
+    "allergens": [
+      "Gluten",
+      "Dairy",
+      "Allium",
+      "Nightshade",
+      "Mushroom",
+      "Alcohol",
+      "Nut"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Halal"
+    ],
+    "ingredients": [
+      "Beef",
+      "Salt",
+      "Pepper",
+      "Wine",
+      "Veal",
+      "Tomato",
+      "Onion",
+      "Carrot",
+      "Celery",
+      "Garlic",
+      "Rosemary",
+      "Bay Leaf",
+      "Semolina",
+      "Durum",
+      "Pepper",
+      "Water",
+      "Shallot",
+      "Parsley",
+      "Chive",
+      "Mushroom",
+      "Parsnip",
+      "Butter",
+      "Cream",
+      "Pierre Poivre",
+      "Chervil",
+      "Pink Peppercorn"
+    ]
+  },
+  {
+    "name": "Lumache (CSM)",
+    "category": "To Start",
+    "allergens": [
+      "Gluten",
+      "Dairy",
+      "Allium",
+      "Legume",
+      "Cheese"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Vegetarian",
+      "Pescetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "Nettle",
+      "Onion",
+      "Pea",
+      "Parmesan",
+      "Butter"
+    ]
+  },
+  {
+    "name": "Chili Lobster",
+    "category": "To Start",
+    "allergens": [
+      "Gluten",
+      "Dairy",
+      "Citrus",
+      "Allium",
+      "Legume",
+      "Shellfish",
+      "Seed",
+      "Sesame"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Pescetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "Lobster",
+      "Butter",
+      "Ginger",
+      "Sriracha",
+      "Lime",
+      "Soy",
+      "Mint",
+      "Onion",
+      "Garlic",
+      "Shallot",
+      "Sesame"
+    ]
+  },
+  {
+    "name": "HALIBUT",
+    "category": "To Follow",
+    "allergens": [
+      "Gluten",
+      "Gluten",
+      "Dairy",
+      "Allium",
+      "Nightshade",
+      "Nut",
+      "Fish",
+      "Egg",
+      "Citrus"
+    ],
+    "removable_allergens": [
+      "Nut"
+    ],
+    "diet": [
+      "Pescetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "Fish",
+      "Chili",
+      "Parsley",
+      "Egg",
+      "Sourdough",
+      "Wheat",
+      "Yeast",
+      "Salt",
+      "Lime",
+      "Soy",
+      "Butter",
+      "Cauliflower",
+      "Capers",
+      "Raisin",
+      "Hazelnut",
+      "Cream",
+      "Onion"
+    ]
+  },
+  {
+    "name": "Duroc Pork Chop",
+    "category": "To Follow",
+    "allergens": [
+      "Dairy",
+      "Allium",
+      "Legume",
+      "Nightshade",
+      "Pork",
+      "Citrus"
+    ],
+    "removable_allergens": [
+      "Dairy",
+      "Citrus"
+    ],
+    "diet": [],
+    "ingredients": [
+      "Pork",
+      "Tea",
+      "Garlic",
+      "Thyme",
+      "Mint",
+      "Butter",
+      "Onion",
+      "Garlic",
+      "Celery",
+      "Bean",
+      "Water",
+      "Lemon",
+      "Parsley",
+      "Ramp",
+      "Collard",
+      "Adobo",
+      "Pepper",
+      "Relish",
+      "Pepper",
+      "Coriander",
+      "Fennel",
+      "Chicharron"
+    ]
+  },
+  {
+    "name": "Filet Mignon",
+    "category": "To Follow",
+    "allergens": [
+      "Dairy",
+      "Allium",
+      "Mushroom",
+      "Nightshade",
+      "Pork",
+      "Alcohol"
+    ],
+    "removable_allergens": [
+      "Pork"
+    ],
+    "diet": [],
+    "ingredients": [
+      "Pork",
+      "Tea",
+      "Garlic",
+      "Thyme",
+      "Mint",
+      "Butter",
+      "Onion",
+      "Garlic",
+      "Celery",
+      "Bean",
+      "Water",
+      "Lemon",
+      "Parsley",
+      "Ramp",
+      "Collard",
+      "Adobo",
+      "Pepper",
+      "Relish",
+      "Pepper",
+      "Coriander",
+      "Fennel",
+      "Chicharron"
+    ]
+  },
+  {
+    "name": "Golden Snapper",
+    "category": "To Follow",
+    "allergens": [
+      "Dairy",
+      "Allium",
+      "Legume",
+      "Nightshade",
+      "Citrus",
+      "Pork",
+      "Fish"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Pescetarian"
+    ],
+    "ingredients": [
+      "Fish",
+      "Butter",
+      "Lemon",
+      "Pea",
+      "Pork",
+      "Garlic",
+      "Thyme",
+      "Lettuce",
+      "Onion",
+      "Buttermilk",
+      "Potato",
+      "Milk",
+      "Cream",
+      "Rosemary",
+      "Salt"
+    ]
+  },
+  {
+    "name": "Cauliflower Steak",
+    "category": "To Follow",
+    "allergens": [
+      "Dairy",
+      "Allium",
+      "Nightshade",
+      "Citrus",
+      "Legume",
+      "soy",
+      "Nut",
+      "Gluten"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Vegetarian",
+      "Pescetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "Chili",
+      "Parsley",
+      "Salt",
+      "Lime",
+      "Soy",
+      "Butter",
+      "Cauliflower",
+      "Capers",
+      "Raisin",
+      "Hazelnut",
+      "Cream",
+      "Onion"
+    ]
+  },
+  {
+    "name": "Burger",
+    "category": "To Follow",
+    "allergens": [
+      "Gluten",
+      "Dairy",
+      "Allium",
+      "Nightshade",
+      "Seed",
+      "Pork",
+      "Sesame",
+      "Mustard"
+    ],
+    "removable_allergens": [],
+    "diet": [],
+    "ingredients": [
+      "Beef",
+      "Onion",
+      "Pork",
+      "Cheese",
+      "Relish",
+      "Sesame",
+      "Seed",
+      "Garlic",
+      "Butter",
+      "Beef",
+      "Pickles",
+      "Ketchup",
+      "Mustard",
+      "Mayonnaise",
+      "Shallot",
+      "Chive"
+    ]
+  },
+  {
+    "name": "CHICKEN UNDER A BRICK",
+    "category": "To Share",
+    "allergens": [
+      "Dairy",
+      "Allium",
+      "Nightshade"
+    ],
+    "removable_allergens": [
+      "Dairy"
+    ],
+    "diet": [
+      
+    ],
+    "ingredients": [
+      "Chicken",
+      "Salt",
+      "Pepper",
+      "Lemon",
+      "Capers",
+      "Shallot",
+      "Butter",
+      "Potato",
+      "Rosemary",
+      "Parsley",
+      "Chili",
+      "Broccoli",
+      "Garlic",
+      "Shallot",
+      "Rice"
+    ]
+  },
+  {
+    "name": "CREEKSTONE FARMS TOMAHAWK",
+    "category": "To Share",
+    "allergens": [
+      "Dairy",
+      "Allium",
+      "Nightshade"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Halal"
+    ],
+    "ingredients": [
+      "Beef",
+      "Parsley",
+      "Rosemary",
+      "Garlic",
+      "Pepper",
+      "Oil",
+      "Butter",
+      "Thyme",
+      "Bone Marrow",
+      "Salt"
+    ]
+  },
+  {
+    "name": "CARROT GLAZED CARROT",
+    "category": "To Share",
+    "allergens": [
+      "Dairy",
+      "Poultry",
+      "Citrus",
+      "Honey",
+      "Corn"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Halal"
+    ],
+    "ingredients": [
+      "Carrot",
+      "Chicken",
+      "Butter",
+      "Mint",
+      "Orange",
+      "Sugar",
+      "Honey",
+      "Cornstarch"
+    ]
+  },
+  {
+    "name": "SUNCHOKED SPINACH",
+    "category": "To Share",
+    "allergens": [
+      "Dairy",
+      "Allium"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Vegetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "Spinach",
+      "Garlic",
+      "Butter",
+      "Sunchoke",
+      "Bay Leaf",
+      "Cream",
+      "Parmesan",
+      "Cheese"
+    ]
+  },
+  {
+    "name": "10-MINUTE CHOCOLATE CHIP COOKIES",
+    "category": "Dessert",
+    "allergens": [
+      "Gluten",
+      "Dairy",
+      "Chocolate",
+      "Egg",
+      "Corn"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Vegetarian",
+      "Pescetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "Butter",
+      "Egg",
+      "Sugar",
+      "Flour",
+      "Cornstarch",
+      "Baking Soda",
+      "Salt",
+      "Chocolate",
+      "Cream",
+      "Milk",
+      "Vanilla"
+    ]
+  },
+  {
+    "name": "LEMON TART",
+    "category": "Dessert",
+    "allergens": [
+      "Gluten",
+      "Dairy",
+      "Citrus",
+      "Egg"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Vegetarian",
+      "Pescetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "Flour",
+      "Sugar",
+      "Salt",
+      "Butter",
+      "Egg",
+      "Lemon",
+      "Water"
+    ]
+  },
+  {
+    "name": "BANANA PUDDING",
+    "category": "Dessert",
+    "allergens": [
+      "Dairy",
+      "Egg",
+      "soy",
+      "Legume",
+      "Gluten",
+      "Corn"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Vegetarian",
+      "Pescetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "Egg",
+      "Corn",
+      "Sugar",
+      "Salt",
+      "Vanilla",
+      "Milk",
+      "Cream",
+      "Banana",
+      "Canola Oil",
+      "Palm Oil",
+      "Soy",
+      "Whey"
+    ]
+  },
+  {
+    "name": "THE EGG",
+    "category": "Dessert",
+    "allergens": [
+      "Dairy",
+      "Nut",
+      "Egg",
+      "Gluten",
+      "Coconut",
+      "Chocolate",
+      "Citrus"
+    ],
+    "removable_allergens": [
+      "Gluten"
+    ],
+    "diet": [
+      "Vegetarian",
+      "Pescetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "Chocolate",
+      "Coconut",
+      "Passion Fruit",
+      "Sugar",
+      "Water",
+      "Salt",
+      "Vanilla",
+      "Egg",
+      "Cream",
+      "Kataifi"
+    ]
+  },
+  {
+    "name": "Chocolate Trifle",
+    "category": "Dessert",
+    "allergens": [
+      "Gluten",
+      "Dairy",
+      "Egg",
+      "Chocolate",
+      "Chili"
+    ],
+    "removable_allergens": [],
+    "diet": [
+      "Vegetarian",
+      "Pescetarian",
+      "Halal"
+    ],
+    "ingredients": [
+      "Flour",
+      "Sugar",
+      "Gluten",
+      "Dairy",
+      "Salt",
+      "Milk",
+      "Butter",
+      "Egg",
+      "Vanilla",
+      "Cocoa",
+      "Baking Powder",
+      "Chocolate",
+      "Ancho",
+      "Water",
+      "Cream"
+    ]
+  }
+]
